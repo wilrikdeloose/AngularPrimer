@@ -1,0 +1,57 @@
+<h5>CLI</h5>
+<p>
+  The Angular CLI is a crucial tool in setting up your Angular projects. You can also read and use the <a href="https://angular.io/guide/quickstart" target="_blank">quickstart</a>.
+  Make sure you have <a href="https://nodejs.org/en/download/" target="_blank">node.js</a> and npm installed. Otherwise you won't be able to install and use the Angular CLI.
+</p>
+<p>
+  Install the Angular CLI using:
+</p>
+<pre class="copytoclipboard"><code class="language-markup">npm install -g @angular/cli</code></pre>
+<h5>Creating a project</h5>
+<p>
+  You can create an Angular project via the command line. Navigate to the folder in which you want to setup your Angular project and type:
+</p>
+<pre class="copytoclipboard"><code class="language-markup">ng new &lt;ProjectName&gt;</code></pre>
+<p><strong>Important:</strong> Don't forget to navigate to your new project folder before generating components!</p>
+<p>You can fire up your app with the following command and checking out the live result via <a href="http://localhost:4200" target="_blank">http://localhost:4200</a>.</p>
+<pre class="copytoclipboard"><code class="language-markup">ng serve</code></pre>
+<h5>Using bootstrap</h5>
+<p>
+  You can use (for instance) Bootstrap to style your application. You need to install it into your Angular application.
+  First navigate to your Angular project folder and then type in the following to install the latest version of Bootstrap.
+</p>
+<pre class="copytoclipboard"><code class="language-markup">npm install bootstrap@latest</code></pre>
+<p>
+  Bootstrap is now installed into your project. However, you still need to tell Angular to load the CSS.
+  Go to your <samp>angular.json</samp> in your project root folder. Look up the styles array and add the Bootstrap CSS so that the styles configuration will look like this:
+</p>
+<pre class="copytoclipboard line-numbers"><code class="language-typescript">"styles": [
+    "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+    "src/styles.css"
+]</code></pre>
+<h5>Project structure</h5>
+<div class="row">
+  <div class="col-md-8">
+    <p>The configuration and initialization files (angular.json, index.html, ...) are located in the <samp>root</samp> folder.
+      All modules (Angular, Bootstrap, ...) are located in <samp>node_modules</samp>.
+      All code is located in the <samp>src</samp> folder. Click the image to enlarge.
+    </p>
+  </div>
+  <div class="col-md-4">
+    <a href="../../../assets/project_structure.png" data-lightbox="project_structure"><img src="../../../assets/project_structure.png" width="200px"/></a>
+  </div>
+</div>
+<h5>How your app is loaded</h5>
+<div class="row">
+  <div class="col-md-8">
+    <p>First, the webserver loads the <samp>index.html</samp> file like with any other normal website (1).
+      The Angular system is loaded in the index.html file and will trigger <samp>main.ts</samp> file to be loaded (2).
+      Inside the <samp>main.ts</samp> file the AppModule from <samp>app.module.ts</samp> is loaded (3).
+      The AppModule loads the initial component, the <samp>AppComponent</samp> in <samp>app.component.ts</samp> (4).
+      Finally, in this component, like in all other components, the selector is declared (5) and so Angular can now render the right template (HTML) file.
+    </p>
+  </div>
+  <div class="col-md-4">
+    <a href="../../../assets/app_loaded.png" data-lightbox="app_loaded"><img src="../../../assets/app_loaded.png" width="200px"/></a>
+  </div>
+</div>

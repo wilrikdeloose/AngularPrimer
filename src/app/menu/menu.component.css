@@ -1,0 +1,6 @@
+.bd-toc {
+    font-size: .8rem;
+    position: sticky;
+    top: 60px;
+    overflow-y: auto;
+}

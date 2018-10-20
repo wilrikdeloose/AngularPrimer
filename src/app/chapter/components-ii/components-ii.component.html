@@ -1,0 +1,110 @@
+<p>
+  We know the basics of components and data binding. These techniques also mix!
+  You can add custom properties to your components and bind to those properties in the template the component was placed in.
+</p>
+
+<h5>Custom properties</h5>
+<p>Say we have a component <code class="language-typescript">TestComponent</code> (the same from before) with a <code class="language-typescript">value</code> property.</p>
+<pre class="copytoclipboard line-numbers"><code class="language-typescript">import &#123; Component, Input &#125; from "@angular/core";
+
+@Component(&#123;
+    selector: 'app-test',
+    template: '<p>{{ chapterService.outputStringInterpolation("value") }}</p>',
+    styles: ['p &#123; color: red; &#125;']
+&#125;)
+export class TestComponent &#123;
+    @Input() private value: string = "It works!";
+&#125;</code></pre>
+<p>
+  We want to be able to pass new values to this template. We can do so with custom propery binding, just like with regular HTML elements.
+  Notice the <code class="language-typescript">@Input()</code> with the Component property.
+  This tells Angular that this attribute is bindable when using the <samp>app-test</samp> selector.
+</p>
+<app-test value="This also works!"></app-test>
+<p>This is the same component as before (that said "It works!") but now we bind a new value to the outputted string value. This is the element:</p>
+<pre><code class="language-typescript">&lt;app-test value="This also works!"&gt;&lt;/app-test&gt;</code></pre>
+<p>
+  <strong>Note:</strong> The <code class="language-typescript">value</code> is of type string, so Angular expects a string.
+  When actually <em>binding</em> to the property using [brackets] you need to pass an actual 'string', including the quotation marks.
+  So <code class="language-html">[value]="This also works!"</code> will give an error!
+  You will need to change it to <code class="language-html">[value]="'This also works!'"</code> in order to pass a string.
+  Now you can also do calculations since it will be parsed by Angular!
+</p>
+<p>
+  The <code class="language-typescript">@Input()</code> can also take a string parameter that defines an alias for the property.
+  This way it is bindable using that alias instead of the name of the Component attribute.
+</p>
+
+<h5>Custom events</h5>
+<p>
+  Just like with properties you can also define custom event that are bindable.
+  Say we have a component with a button on it. We do not yet know what the button needs to do.
+  So, we want to listen from outside the component to this component until it tells us the button was pressed.
+  We need to define an <code class="language-typescript">EventEmitter</code> in our component as <code class="language-typescript">Output</code>.
+</p>
+<pre class="copytoclipboard line-numbers"><code class="language-typescript">// Here we assign an alias 'btnClick' to the event
+@Output("btnClick") private onClick = new EventEmitter&lt;number&gt;();
+
+onButtonClick() &#123;
+    const rand: number = Math.trunc(Math.random() * 100);
+    this.onClick.emit(rand); // this emits a message to all subscribed listeners!
+&#125;</code></pre>
+<p>Try it out yourself: <app-test [showButton]="true" (btnClick)="buttonWasClicked($event)"></app-test></p>
+<p>This is what the usage of the component looks like. The <samp>buttonWasClicked</samp> method recieves a number as parameter and just calls the built-in JavaScript alert method.</p>
+<pre><code class="language-html">&lt;app-test (btnClick)="buttonWasClicked($event)"&gt;&lt;/app-test&gt;</code></pre>
+<p>Using custom property and event binding we can now pass data between components!</p>
+
+<h5>View encapsulation</h5>
+<p>
+  CSS is by default applied to the entire application.
+  However, Angular emulates the use of the Shadow DOM when using CSS with your components.
+  Inspect your components HTML elements and see how it uses self injected CSS attributes to bind the styles to your component elements without affecting other components.
+</p>
+<p>
+  This default behaviour can be overwritten!
+  When you want the styles defined within your component to be set globally, you can change the <code class="language-typescript">encapsulation</code>.
+  You can do so in the Component decorator by adding the following line:
+</p>
+<pre><code class="language-typescript">encapsulation: ViewEncapsulation.None</code></pre>
+
+<h5>Local element references</h5>
+<p>
+  Sometimes you want to use the value of an input field as a parameter for a method you call locally within your template.
+  This was already done with the example of adding people to the list generated with the <code class="language-typescript">ngFor</code> directive.
+  Look at the example below.
+</p>
+<pre class="line-numbers copytoclipboard"><code class="language-typescript">&lt;div class="container"&gt;
+  &lt;div class="row"&gt;
+    &lt;div class="col-md-2"&gt;&lt;label for="name"&gt;Name:&lt;/label&gt;&lt;/div&gt;
+    &lt;div class="col-md-10"&gt;&lt;input #personName type="text" class="form-control" id="name" aria-describedby="name" placeholder="Person name"&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="row"&gt;
+    &lt;div class="col-md-2"&gt;&lt;label for="age"&gt;Age:&lt;/label&gt;&lt;/div&gt;
+    &lt;div class="col-md-10"&gt;&lt;input #personAge type="text" class="form-control" id="age" aria-describedby="age" placeholder="Person age"&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="row"&gt;
+    &lt;div class="col-md-2"&gt;&lt;/div&gt;
+    &lt;div class="col-md-10"&gt;&lt;button type="submit" (click)="addPerson(personName.value, personAge.value)" class="btn btn-secondary"&gt;
+      Add person
+      &lt;span class="badge badge-light"&gt;{{ chapterService.outputStringInterpolation("people.length + 1") }}&lt;/span&gt;
+    &lt;/button&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div</code></pre>
+<p>
+  On lines 4 and 8 you can see that we place a naming reference to the input element using the #hashtag notation.
+  Using the names defined with the #hashtag notation we can then locally reference those elements.
+  On line 12 we use the values of the input elements on lines 4 and 8 to pass them as parameters to a method.
+</p>
+
+<h5>Content projecting</h5>
+<p>
+  Say you want to pass down some HTML into your component that it needs to render.
+  The HTML needs to be passed between the component opening and closing selector.
+  Angular by default gets rid of everything in between those open and close tags.
+  However, when using the <code class="language-typescript">&lt;ng-content&gt;&lt;/ng-content&gt;</code> tags, it will then render the HTML on that spot in your component template.
+</p>
+<app-test value="">This works as well!</app-test>
+<p>We now pass the text "This works as well!" in between the opening and closing tags of our app-test component.</p>
+<pre><code class="language-typescript">&lt;app-test value=""&gt;This works as well!&lt;/app-test&gt;</code></pre>
+<p>Our template now looks like this:</p>
+<pre><code class="language-html">&lt;p&gt;{{ chapterService.outputStringInterpolation("value") }} &lt;ng-content&gt;&lt;/ng-content&gt;&lt;/p&gt;</code></pre>

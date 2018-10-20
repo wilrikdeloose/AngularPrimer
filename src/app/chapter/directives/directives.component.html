@@ -1,0 +1,201 @@
+<p>
+  Directives are instructions in the DOM. We can off course create our own directives, but Angular has also a couple of built-in directives.
+  Components are directives! But there are more.
+</p>
+
+<h5>Conditional directives</h5>
+<p>The ngIf and ngSwitch directives are conditional directives. It tells the DOM to only render a certain element (including all sub-elements) under a certain condition.</p>
+<p>The following text will be removed from the DOM by Angular when the button is clicked:</p>
+<div class="subtle-border">
+  <a class="btn btn-outline-secondary" href="#" role="button" (click)="toggleDisplay($event)">Click me!</a>
+  <span *ngIf="display" style="vertical-align: middle; padding-left: 16px;">This text over here!</span>
+</div>
+<p>The template code is the following:</p>
+<pre class="copytoclipboard line-numbers"><code class="language-html">&lt;a class="btn btn-outline-secondary" href="#" role="button" (click)="toggleDisplay($event)"&gt;Click me!&lt;/a&gt;
+&lt;span *ngIf="display" style="vertical-align: middle; padding-left: 16px;"&gt;This text over here!&lt;/span&gt;</code></pre>
+<p><strong>Important: </strong> The asterisk * right in front of <code class="language-typescript">ngIf</code> is important! It tells Angular that this is a <em>structural</em> directive, meaning it cal alter the DOM!</p>
+<p>The code for the component is displayed below:</p>
+
+<pre class="copytoclipboard line-numbers"><code class="language-typescript">import &#123; Component &#125; from '@angular/core';
+
+@Component(&#123; selector: 'app-directives', templateUrl: './directives.component.html' &#125;)
+export class DirectivesComponent &#123;
+  private display: boolean = true;
+
+  toggleDisplay(event: Event) &#123;
+    event.preventDefault();
+    this.display = !this.display;
+  &#125;
+&#125;</code></pre>
+<p>
+  The example looks exactly like the [property binding] example, but it is not.
+  With the propery binding example we switched the <em>hidden</em> propery of the paragraph element.
+  Here we completely remove the entire element from the DOM when <code class="language-typescript">display</code> is set to false!
+  Check out the difference with the code inspector.
+</p>
+<p>There is also an <code class="language-typescript">else</code> block possible. Check out the <a href="https://angular.io/api/common/NgIf" target="_blank">Angular documentation</a> on this subject.</p>
+
+<h5>Switch case</h5>
+<p>
+  It's also possible to use switch statements, with cases and a default value.
+  We added <code class="language-typescript">private value: number = 0;</code> to the DirectivesComponent.
+  Each time we click the button we add 1 to the value until we reach 3 and then we start at 0 again (<code class="language-typescript">this.value = (this.value + 1) % 3;</code>).
+</p>
+<div class="subtle-border row">
+  <div class="col-md-2">
+    <a class="btn btn-outline-secondary" href="#" role="button" (click)="increaseValue($event)">Click me!</a>
+  </div>
+  <div class="col-md-auto" style="padding-top: 10px;" [ngSwitch]="value">
+    <ng-container *ngSwitchCase="0"><p>Value is 0</p></ng-container>
+    <ng-container *ngSwitchCase="1"><p>Value is 1</p></ng-container>
+    <ng-container *ngSwitchDefault><p>Value is 2 (default)</p></ng-container>
+  </div>
+</div>
+<p>Below you find the template code:</p>
+<pre class="copytoclipboard line-numbers"><code class="language-html">&lt;a class="btn btn-outline-secondary" href="#" role="button" (click)="increaseValue($event)"&gt;Click me!&lt;/a&gt;
+
+&lt;div [ngSwitch]="value"&gt;
+  &lt;ng-container *ngSwitchCase="0"&gt;&lt;p&gt;Value is 0&lt;/p&gt;&lt;/ng-container&gt;
+  &lt;ng-container *ngSwitchCase="1"&gt;&lt;p&gt;Value is 1&lt;/p&gt;&lt;/ng-container&gt;
+  &lt;ng-container *ngSwitchDefault&gt;&lt;p&gt;Value is 2 (default)&lt;/p&gt;&lt;/ng-container&gt;
+&lt;/div&gt;</code></pre>
+
+<h5>Loop directives</h5>
+<p>
+  Just like in programming you somtimes want to loop through a collection and repeat the code for each element of the collection.
+  We added a Person class which is defined in a new person.model.ts file like in the example below. Then we added an array of people in our DirectivesComponent.
+  Make sure to import the file in the component: <code class="language-typescript">import &#123; Person &#125; from './person.model';</code>.
+</p>
+<p>The person model:</p>
+<pre class="copytoclipboard line-numbers"><code class="language-typescript">export class Person &#123;
+  constructor(private name: string, private age: number) &#123; &#125;
+  public toString() &#123; return this.name + " - " + this.age; &#125;
+&#125;</code></pre>
+<p>The DirectivesComponent is defined below.</p>
+<pre class="copytoclipboard line-numbers"><code class="language-typescript">import &#123; Component &#125; from '@angular/core';
+import &#123; Person &#125; from './person.model';
+
+@Component(&#123; selector: 'app-directives', templateUrl: './directives.component.html' &#125;)
+export class DirectivesComponent &#123;
+  private people: Person[] = [];
+
+  addPerson(name: string, age: number) &#123;
+    this.people.push(new Person(name, age));
+  &#125;
+&#125;</code></pre>
+<p>Now fill in the form below and see what happens in the HTML below it!</p>
+<h6>Add a person</h6>
+<form>
+  <div class="form-group">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2"><label for="name">Name:</label></div>
+        <div class="col-md-10"><input type="text" class="form-control" id="name" aria-describedby="name" placeholder="Person name" required #personName></div>
+      </div>
+      <div class="row">
+        <div class="col-md-2"><label for="age">Age:</label></div>
+        <div class="col-md-10"><input type="text" class="form-control" id="age" aria-describedby="age" placeholder="Person age" required #personAge></div>
+      </div>
+      <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-10"><button type="submit" class="btn btn-secondary" (click)="addPerson(personName.value, personAge.value)">
+          Add person
+          <span class="badge badge-light">{{ people.length + 1 }}</span>
+        </button></div>
+      </div>
+    </div>
+  </div>
+</form>
+<table class="table table-sm" *ngIf="people.length > 0">
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>Name</th>
+      <th>Age</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let person of people; let i = index">
+      <td>{{ i + 1 }}.</td>
+      <td>{{ person.name }}</td>
+      <td>{{ person.age }}</td>
+    </tr>
+  </tbody>
+</table>
+<p>Number of people: {{ people.length }}</p>
+<p>Make sure to check out the HTML for the form above too! The code for this template is the following.</p>
+<pre class="copytoclipboard line-numbers"><code class="language-html">&lt;table class="table table-sm" *ngIf="people.length &gt; 0"&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;id&lt;/th&gt;
+      &lt;th&gt;Name&lt;/th&gt;
+      &lt;th&gt;Age&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr *ngFor="let person of people; let i = index"&gt;
+      &lt;td&gt;{{ chapterService.outputStringInterpolation("i + 1") }}.&lt;/td&gt;
+      &lt;td&gt;{{ chapterService.outputStringInterpolation("person.name") }}&lt;/td&gt;
+      &lt;td&gt;{{ chapterService.outputStringInterpolation("person.age") }}&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Number of people: {{ chapterService.outputStringInterpolation("people.length") }}&lt;/p&gt;</code></pre>
+<p><strong>Note:</strong> Retrieving the index of the iterator is optional. The part next to and including the semicolon ; is optional</p>
+
+<h5>Styling and classes</h5>
+<p>There are two more directives, <code class="language-typescript">ngStyle</code> and <code class="language-typescript">ngClass</code>, to dynamically control both attributes.</p>
+<p>The following control shows string interpolation, property and event binding plus the ngFor, ngStyle and ngClass directives in action.</p>
+<div class="subtle-border">
+  <div class="btn-group btn-group-toggle" data-toggle="buttons">
+    <label
+      *ngFor="let color of colors; let i = index"
+      [ngClass]="{
+        'btn': true,
+        'btn-outline-secondary': true,
+        'active': i === selectedColor
+      }">
+      <input
+        type="radio"
+        name="options"
+        [id]="'option_' + color"
+        autocomplete="off"
+        (change)="selectedColor = i">
+        {{ color }}
+    </label>
+  </div>
+  <span [ngStyle]="{
+      'color': colors[selectedColor],
+      'padding': '16px'
+    }">
+    You can dynamically style me!
+  </span>
+</div>
+<br />
+<p>
+  We added an array of strings <code class="language-typescript">private colors: string[] = ['Red', 'Green', 'Blue'];</code> and a selected index <code class="language-typescript">private selectedColor: number = 0;</code> to the DirectivesComponent.
+  Below you find the template code for this part.
+</p>
+<pre class="copytoclipboard line-numbers"><code class="language-html">&lt;div class="btn-group btn-group-toggle" data-toggle="buttons"&gt;
+  &lt;label
+    *ngFor="let color of colors; let i = index"
+    [ngClass]="&#123;
+      'btn': true,
+      'btn-outline-secondary': true,
+      'active': i === selectedColor
+    &#125;"&gt;
+    &lt;input
+      type="radio"
+      name="options"
+      [id]="'option_' + color"
+      autocomplete="off"
+      (change)="selectedColor = i"&gt;
+      {{ chapterService.outputStringInterpolation("color") }}
+  &lt;/label&gt;
+&lt;/div&gt;
+&lt;span [ngStyle]="&#123;
+    'color': colors[selectedColor],
+    'padding': '16px'
+  &#125;"&gt;
+  You can dynamically style me!
+&lt;/span&gt;</code></pre>

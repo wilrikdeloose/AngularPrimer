@@ -1,0 +1,10 @@
+<div class="d-xl-block bd-toc">
+    <h6>Table of content</h6>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item"><a href="#top">Top</a></li>
+        <li
+            *ngFor="let chapter of chapterService.getAll(); let i = index"
+            class="list-group-item">
+        <a [href]="'#' + chapter.tag">{{ i + 1 }}. {{ chapter.title }}</a></li>
+    </ul>
+</div>

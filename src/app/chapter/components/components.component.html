@@ -1,0 +1,57 @@
+<h5>Introduction</h5>
+<p>
+  Components are the main building blocks of every Angular application. One of the first things you need to do when creating a new app is determine what will be and what will not be a component.
+</p>
+<h5>Create components manually</h5>
+<p>There are a few steps in creating new components.</p>
+<ol type="1">
+  <li>Create a new folder for the component, for instance <samp>test</samp>. This can be a sub-folder of anther component if it will be used inside that component. All components are basically childeren of the App component.</li>
+  <li>Create the files you need inside the <samp>test</samp> folder:
+    <ul>
+      <li><samp>test.component.ts</samp>, obligatory for any component since it will define the component</li>
+      <li><samp>test.component.html</samp>, the optional, but recommended template file</li>
+      <li><samp>test.component.css</samp>, optional style-sheet for the component</li>
+      <li><samp>test.component.spec</samp>, optional testing file</li>
+    </ul>
+  </li>
+  <li>Define the component in the <samp>test.component.ts</samp> file</li>
+  <li>Register the component with the Angular app in the AppModule: import the <samp>test.component.ts</samp> file and declare the <samp>TestComponent</samp></li>
+</ol>
+<p>To manually create a component, you need to go through the following two steps.</p>
+<ol>
+  <li>In the component file, export a class.  Give the class an <code class="language-typescript">@Component</code> decorator with a JavaScript object as paramater. Each component has two obligatory parts.
+    <ol>
+      <li>Declare the selector: <code class="language-typescript">selector: 'app-test'</code></li>
+      <li>Declare a template, either inline or via an external file and declaring the URL to that file</li>
+    </ol>
+  </li>
+  <li>Add <code class="language-typescript">TestComponent</code> to the list of <code class="language-typescript">Declarations</code> in the AppModule and import the <samp>test.component.ts</samp> file.</li>
+</ol>
+<p>From hereon the <samp>test.component.ts</samp> file is what you call the component. The HTML file is called the template of the component.</p>
+<h5>Create components via the CLI</h5>
+<p>Except for the actual programming, all of the above steps can be done via the CLI using the following command:</p>
+<pre class="copytoclipboard"><code class="language-markup">ng generate component &lt;ComponentName&gt; --spec false</code></pre>
+<p>Setting the spec flag to false skips the creation of a test file. The above command can be abbreviated with:</p>
+<pre class="copytoclipboard"><code class="language-markup">ng g c &lt;ComponentName&gt; --spec false</code></pre>
+<p>Both commands are the same and create the component, template and style sheet as well as register the component with the AppModule.</p>
+<h5>Example</h5>
+<p>Below you'll find a <samp>TestComponent</samp> (which can also be found in this primer) with an inline template and style. A component with an inline template and styles may look like this:</p>
+<pre class="copytoclipboard line-numbers"><code class="language-typescript">import &#123; Component &#125; from "&#64;angular&#47;core";
+
+&#64;Component(&#123;
+    selector: 'app-test',
+    template: '&lt;p&gt;It works!&lt;&#47;p&gt;',
+    styles: &#91;'p &#123; color: red&#59; &#125;'&#93;
+&#125;)
+export class TestComponent &#123; &#125;</code></pre>
+<p>The result from this piece of code:</p>
+<div class="row">
+    <div class="col-md-auto"><app-test></app-test></div>
+    <div class="col-md-auto">&lArr; it may not look like much, but this is the above Angular component!</div>
+</div>
+<p>Instead of the template you can point to a template file using <code class="language-typescript">templateUrl</code>. For the styles, you can define <code class="language-typescript">styleUrls</code> using an array or URL's pointing to several style sheets.</p>
+<h5>Notes</h5>
+<p>
+  A component is, next to being an Angular component, just a class. It can have (private or public) attributes and methods. Those attributes can be used via the component.
+  The template can access all attributes and methods directly as we will see shortly. Even the private ones!
+</p>

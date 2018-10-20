@@ -1,0 +1,59 @@
+<p>Angular knows a couple of different types of data binding. We will briefly go through the different types and demonstrate them.</p>
+<h5>String interpolation</h5>
+<p>
+  We gave this DataBindingComponent an attribute <code class="language-typescript">isHidden</code>, which is statically set to <code class="language-typescript">true</code>.
+  Inside the Component we added an attribute like so: <code class="language-typescript">private isHidden: boolean = true;</code>
+  Using string interpolation we can output any string value inside our templates. Also values that translate to a string, like booleans.
+  To apply string interpolation we use <samp>{{ chapterService.outputStringInterpolation("double curly brackets") }}</samp>.
+</p>
+<p>The value of <code class="language-typescript">isHidden</code> equals <samp>{{ isHidden }}</samp>.</p>
+<p>Here, the value of <code class="language-typescript">isHidden</code> is fetched from the component and displayed using string interpolation, a form of one-way data binding.</p>
+
+<h5>Propery binding</h5>
+<p>It is possible to bind a value to a property of an HTML element. Each HTML element has a <code class="language-html">hidden</code> attribute.</p>
+<p>The following paragraph with the text "THIS MESSAGE IS HIDDEN!!" should not (yet) be visible, because the hidden propery is bound to the <code class="language-typescript">isHidden</code> attribute. Check the HTML code with the code inspector.</p>
+<div class="subtle-border" style="height: 40px"><p [hidden]="isHidden">THIS MESSAGE IS HIDDEN!!</p></div><br />
+<p>The template code for the paragraph looks like this:</p>
+<pre class="copytoclipboard line-numbers"><code class="language-html">&lt;p [hidden]="isHidden"&gt;THIS MESSAGE IS HIDDEN!!&lt;/p&gt;</code></pre>
+<p>With the [square brackets] we tell Angular that we want to bind this property to some value.</p>
+<h5>Event binding</h5>
+<p>
+  Below you see a checkbox that represents the current state of the <code class="language-typescript">isHidden</code> attribute through propery binding.
+  However, it also binds the onClick event to an internal onCheckboxClicked() method. Try it out! Do you see the "hidden message" appearing above?
+</p>
+<div class="form-check">
+  <input class="form-check-input" type="checkbox"  id="check" [checked]="isHidden" (click)="onCheckboxClicked($event)">
+  <label class="form-check-label" for="check">isHidden</label>
+</div>
+<p>The code for the checkbox looks like this:</p>
+<pre class="copytoclipboard line-numbers"><code class="language-html">&lt;input
+  class="form-check-input"
+  type="checkbox"
+  id="check"
+  [checked]="isHidden"
+  (click)="onCheckboxClicked($event)"
+&gt;</code></pre>
+<p>
+  The <code class="language-typescript">$event</code> parameter is not needed, but it is there to show that this way you can pass the event data. In this case it is the mouse click data.
+  The code for the onCheckboxClicked() method in the DataBindingComponent looks like this:
+</p>
+<pre class="copytoclipboard line-numbers"><code class="language-typescript">onCheckboxClicked(event: Event) &#123;
+  console.log(event);
+  this.isHidden = !this.isHidden;
+&#125;</code></pre>
+
+<h5>Two-way data binding</h5>
+<p>This form of data binding makes sure that the template is always synchronised with the component data and vice versa. Let's see a demo!</p>
+<div class="row">
+  <div class="col-md-3" style="margin:auto"><p>Type someting here</p></div>
+  <div class="col-md-9"><input [(ngModel)]="inputValue" class="form-control"></div>
+</div>
+<div class="row">
+  <div class="col-md-3"><p>Watch the magic</p></div>
+  <div class="col-md-9"><p style="margin-left: 12px;">{{ inputValue }}</p></div>
+</div>
+<p>We added a <code class="language-typescript">private inputValue: string = "";</code> to DataBindingComponent. The template looks somthing like so:</p>
+<pre class="copytoclipboard line-numbers"><code class="language-html">Type someting here: &lt;input &#91;&#40;ngModel&#41;&#93;="inputValue" class="form-control"&gt;
+Watch the magic: {{ chapterService.outputStringInterpolation("inputValue") }}</code></pre>
+<p>
+  <strong>Important:</strong> To use two-way data binding you need to import the FormsModule in AppModule with <code class="language-typescript">import &#123; FormsModule &#125; from '@angular/forms';</code> and then adding <code class="language-typescript">FormsModule</code> to the imports of AppModule.</p>
