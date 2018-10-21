@@ -95,6 +95,7 @@ onButtonClick() &#123;
   Using the names defined with the #hashtag notation we can then locally reference those elements.
   On line 12 we use the values of the input elements on lines 4 and 8 to pass them as parameters to a method.
 </p>
+<p>It's also possible to reference elements from inside your component code. TODO!</p>
 
 <h5>Content projecting</h5>
 <p>
@@ -105,6 +106,6 @@ onButtonClick() &#123;
 </p>
 <app-test value="">This works as well!</app-test>
 <p>We now pass the text "This works as well!" in between the opening and closing tags of our app-test component.</p>
-<pre><code class="language-typescript">&lt;app-test value=""&gt;This works as well!&lt;/app-test&gt;</code></pre>
+<pre><code class="language-html">&lt;app-test value=""&gt;This works as well!&lt;/app-test&gt;</code></pre>
 <p>Our template now looks like this:</p>
 <pre><code class="language-html">&lt;p&gt;{{ chapterService.outputStringInterpolation("value") }} &lt;ng-content&gt;&lt;/ng-content&gt;&lt;/p&gt;</code></pre>

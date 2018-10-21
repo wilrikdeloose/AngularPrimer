@@ -7,7 +7,8 @@ import { ChapterService } from '../chapter.service';
   encapsulation: ViewEncapsulation.None
 })
 export class ComponentsIIComponent {
-  constructor(private chapterService: ChapterService) { }
+  get chapterService() { return this._chapterService; }
+  constructor(private _chapterService: ChapterService) { }
 
   buttonWasClicked(rand: number) {
     alert("The number was " + rand);

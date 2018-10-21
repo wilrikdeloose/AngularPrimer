@@ -7,5 +7,6 @@ import { ChapterService } from '../chapter/chapter.service';
     styleUrls: ['./menu.component.css']
 })
 export class MenuComponent {
-    constructor(private chapterService: ChapterService) { }
+    get chapterService() { return this._chapterService; }
+    constructor(private _chapterService: ChapterService) { }
  }

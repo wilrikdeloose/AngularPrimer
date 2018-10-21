@@ -8,8 +8,8 @@ import { Chapter } from './chapter/chapter.model';
   providers: [ChapterService]
 })
 export class AppComponent {
-
-  constructor(private chapterService: ChapterService) { }
+  get chapterService() { return this._chapterService; }
+  constructor(private _chapterService: ChapterService) { }
 
   getYear() {
     const yearBegin = 2018;

@@ -6,11 +6,12 @@ import { VERSION } from '@angular/core';
   templateUrl: './introduction.component.html'
 })
 export class IntroductionComponent implements OnInit {
-  private version: string;
+  private _version: string;
+  get version() { return this._version; }
   
   constructor() { }
 
   ngOnInit() {
-    this.version = VERSION.full;
+    this._version = VERSION.full;
   }
 }

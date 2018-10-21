@@ -5,25 +5,35 @@ import { ChapterService } from '../chapter.service';
 
 @Component({ selector: 'app-directives', templateUrl: './directives.component.html' })
 export class DirectivesComponent {
-  private display: boolean = true;
-  private value: number = 0;
-  private people: Person[] = [];
-  private colors: string[] = ['Red', 'Green', 'Blue'];
-  private selectedColor: number = 0;
+  get display() { return this._display; }
+  private _display: boolean = true;
 
-  constructor(private chapterService: ChapterService) { }
+  get value() { return this._value; }
+  private _value: number = 0;
+
+  get people() { return this._people.slice(); }
+  private _people: Person[] = [];
+
+  get colors() { return this._colors.slice(); }
+  private _colors: string[] = ['Red', 'Green', 'Blue'];
+
+  get selectedColor() { return this._selectedColor; }
+  private _selectedColor: number = 0;
+
+  get chapterService() { return this._chapterService; }
+  constructor(private _chapterService: ChapterService) { }
 
   addPerson(name: string, age: number) {
-    this.people.push(new Person(name, age));
+    this._people.push(new Person(name, age));
   }
 
   toggleDisplay(event: Event) {
     event.preventDefault();
-    this.display = !this.display;
+    this._display = !this._display;
   }
 
   increaseValue(event: Event) {
     event.preventDefault();
-    this.value = (this.value + 1) % 3;
+    this._value = (this._value + 1) % 3;
   }
 }

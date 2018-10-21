@@ -14,8 +14,11 @@ import { Component, Input, Output, EventEmitter } from "@angular/core";
     styles: ['p { color: red; }']
 })
 export class TestComponent {
-    @Input() private value: string = "It works!";
-    @Input() private showButton: boolean = false;
+    set value(val: string) { this._value = val; }
+    @Input() private _value: string = "It works!";
+
+    set showButton(val: boolean) { this._showButton = val; }
+    @Input("showButton") private _showButton: boolean = false;
 
     @Output("btnClick") private onClick = new EventEmitter<number>();
 
