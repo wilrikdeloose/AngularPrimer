@@ -8,6 +8,7 @@ export class ChapterService {
         new Chapter('Data binding', 'data-binding'),
         new Chapter('Directives', 'directives'),
         new Chapter('Components II', 'components-ii'),
+        new Chapter('Custom directives', 'custom-directives'),
         new Chapter('Services', 'services'),
         new Chapter('Routing', 'routing'),
         new Chapter('HTML forms', 'html-forms'),

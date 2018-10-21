@@ -18,6 +18,7 @@ import { PipesComponent } from './chapter/pipes/pipes.component';
 import { HttpRequestsComponent } from './chapter/http-requests/http-requests.component';
 import { ApendicesComponent } from './chapter/apendices/apendices.component';
 import { TestComponent } from './test/test.component';
+import { CustomDirectivesComponent } from './chapter/custom-directives/custom-directives.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { TestComponent } from './test/test.component';
     PipesComponent,
     HttpRequestsComponent,
     ApendicesComponent,
-    TestComponent
+    TestComponent,
+    CustomDirectivesComponent
   ],
   imports: [
     BrowserModule,
