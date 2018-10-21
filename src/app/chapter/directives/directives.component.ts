@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 
 import { Person } from './person.model';
 import { ChapterService } from '../chapter.service';
@@ -23,8 +23,11 @@ export class DirectivesComponent {
   get chapterService() { return this._chapterService; }
   constructor(private _chapterService: ChapterService) { }
 
+  @ViewChild('personName') nameInput: ElementRef;
+
   addPerson(name: string, age: number) {
-    this._people.push(new Person(name, age));
+    const person = new Person(this.nameInput.nativeElement.value, age);
+    this._people.push(person);
   }
 
   toggleDisplay(event: Event) {

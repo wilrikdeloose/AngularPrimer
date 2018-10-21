@@ -95,7 +95,18 @@ onButtonClick() &#123;
   Using the names defined with the #hashtag notation we can then locally reference those elements.
   On line 12 we use the values of the input elements on lines 4 and 8 to pass them as parameters to a method.
 </p>
-<p>It's also possible to reference elements from inside your component code. TODO!</p>
+<p>
+  It's also possible to reference elements from inside your component code.
+  You can put references to HTML elements in your code with <code class="language-typescript">ElementRef</code> type variables.
+  Use the <code class="language-typescript">@ViewChild('el')</code> decorator with <code class="language-typescript">el</code> being the element you want to reference.
+  Within our typescript code we can now reference the name and age input field using the following example code.
+</p>
+<pre class="copytoclipboard line-numbers"><code class="language-typescript">@ViewChild('personName') nameInput: ElementRef;
+
+addPerson(name: string, age: number) &#123;
+  const person = new Person(this.nameInput.nativeElement.value, age);
+  this._people.push(person);
+&#125;</code></pre>
 
 <h5>Content projecting</h5>
 <p>
@@ -104,8 +115,20 @@ onButtonClick() &#123;
   Angular by default gets rid of everything in between those open and close tags.
   However, when using the <code class="language-typescript">&lt;ng-content&gt;&lt;/ng-content&gt;</code> tags, it will then render the HTML on that spot in your component template.
 </p>
-<app-test value="">This works as well!</app-test>
-<p>We now pass the text "This works as well!" in between the opening and closing tags of our app-test component.</p>
-<pre><code class="language-html">&lt;app-test value=""&gt;This works as well!&lt;/app-test&gt;</code></pre>
+<app-test value="">This <u>works</u> as well!</app-test>
+<p>We now pass the text "This works as well!" with the word 'works' underlined in between the opening and closing tags of our app-test component.</p>
+<pre><code class="language-html">&lt;app-test value=""&gt;This &lt;u&gt;works&lt;/u&gt; as well!&lt;/app-test&gt;</code></pre>
 <p>Our template now looks like this:</p>
 <pre><code class="language-html">&lt;p&gt;{{ chapterService.outputStringInterpolation("value") }} &lt;ng-content&gt;&lt;/ng-content&gt;&lt;/p&gt;</code></pre>
+<p>
+  It's possible to reference elements that are in between the component selectors.
+  For this you can use <code class="language-typescript">@ContentChild('el')</code> in the same way as you would with <code class="language-typescript">@ViewChild('el')</code>.
+  ViewChild won't work since the projected HTML is not part of the view.
+  Therefore ContentChild is used because it is part of the <em>content</em> of the component!
+</p>
+
+<h5>Lifecycle hooks</h5>
+<p>
+  There are several <em>lifecycle hooks</em> that can be used when working with components.
+  Check out <a href="https://angular.io/guide/lifecycle-hooks" target="_blank">this page</a> with great examples on these hooks and how to use them!
+</p>
